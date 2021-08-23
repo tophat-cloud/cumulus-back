@@ -8,7 +8,7 @@ from .models import Member, Project
 
 class MemberView(APIView):
     """
-    POST /user
+    POST /api/member
     """
     def post(self, request):
         member_serializer = MemberSerializer(data=request.data)
@@ -20,8 +20,8 @@ class MemberView(APIView):
             return Response(member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
  
     """
-    GET /user
-    GET /user/{user_id}
+    GET /api/member
+    GET /api/member/{member_id}
     """
     def get(self, request, **kwargs):
         if kwargs.get('member_id') is None:
@@ -34,7 +34,7 @@ class MemberView(APIView):
             return Response(member_serializer.data, status=status.HTTP_200_OK)
  
     """
-    PUT /user/{user_id}
+    PUT /api/member/{member_id}
     """
     def put(self, request, **kwargs):
         if kwargs.get('member_id') is None:
@@ -51,7 +51,7 @@ class MemberView(APIView):
                 return Response(updated_member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
             
     """
-    DELETE /user/{user_id}
+    DELETE /api/member/{member_id}
     """
     def delete(self, request, **kwargs):
         if kwargs.get('member_id') is None:
@@ -65,7 +65,7 @@ class MemberView(APIView):
 
 class ProjectView(APIView):
     """
-    POST /user
+    POST /api/project
     """
     def post(self, request):
         new_project_data = {
@@ -82,19 +82,19 @@ class ProjectView(APIView):
             return Response(project_serializer.error, status=status.HTTP_400_BAD_REQUEST)
  
     """
-    GET /user
-    GET /user/{user_id}
+    GET /api/project
+    GET /api/project/{project_id}
     """
     def get(self, request, **kwargs):
         if kwargs.get('project_id') is None:
-            return Response("no such project", status=status.HTTP_404_NOT_FOUND)
+            return Response("project not found", status=status.HTTP_404_NOT_FOUND)
         else:
             project_id = kwargs.get('project_id')
             project_serializer = ProjectSerializer(Project.objects.get(id=project_id))
             return Response(project_serializer.data, status=status.HTTP_200_OK)
  
     """
-    PUT /user/{user_id}
+    PUT /api/project/{project_id}
     """
     def put(self, request, **kwargs):
         if kwargs.get('project_id') is None:
@@ -110,9 +110,9 @@ class ProjectView(APIView):
             else:
                 return Response(updated_member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
- 
+
     """
-    DELETE /user/{user_id}
+    DELETE /api/project/{project_id}
     """
     def delete(self, request, **kwargs):
         if kwargs.get('project_id') is None:
@@ -121,5 +121,5 @@ class ProjectView(APIView):
             project_id = kwargs.get('project_id')
             project = Project.objects.get(id=project_id)
             project.delete()
-            return Response("deleted", status=status.HTTP_200_OK)
+            return Response("project deleted", status=status.HTTP_200_OK)
  
