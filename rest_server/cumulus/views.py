@@ -96,8 +96,20 @@ class ProjectView(APIView):
     """
     PUT /user/{user_id}
     """
-    def put(self, request):
-        return Response("test ok", status=200)
+    def put(self, request, **kwargs):
+        if kwargs.get('project_id') is None:
+            return Response("project not found", status=status.HTTP_404_NOT_FOUND)
+        else:
+            project_id = kwargs.get('project_id')
+            member_object = Member.objects.get(id=project_id)
+
+            updated_member_serializer = ProjectSerializer(member_object, data=request.data)
+            if updated_member_serializer.is_valid():
+                updated_member_serializer.save()
+                return Response(updated_member_serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(updated_member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
+
  
     """
     DELETE /user/{user_id}
