@@ -13,7 +13,7 @@ class Member(models.Model):
 
 
 class Project(models.Model):
-    id = models.CharField(max_length=21, default=generate, primary_key=True)
+    id = models.CharField(max_length=21, default=generate, primary_key=True, editable=False)
     domain = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -29,7 +29,7 @@ class Thunder(models.Model):
 
 
 class ThunderSupport(models.Model):
-    statusCode = models.IntegerField(primary_key=True)
+    statusCode = models.IntegerField(primary_key=True, editable=False)
     suggestion = models.TextField()
     rel_link = models.TextField()
 
