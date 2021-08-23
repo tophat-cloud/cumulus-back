@@ -36,14 +36,31 @@ class MemberView(APIView):
     """
     PUT /user/{user_id}
     """
-    def put(self, request):
-        return Response("test ok", status=200)
- 
+    def put(self, request, **kwargs):
+        if kwargs.get('member_id') is None:
+            return Response("member not found", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            member_id = kwargs.get('member_id')
+            member_object = Member.objects.get(id=member_id)
+
+            updated_member_serializer = MemberSerializer(member_object, data=request.data)
+            if updated_member_serializer.is_valid():
+                updated_member_serializer.save()
+                return Response(updated_member_serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(updated_member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
+            
     """
     DELETE /user/{user_id}
     """
-    def delete(self, request):
-        return Response("test ok", status=200)
+    def delete(self, request, **kwargs):
+        if kwargs.get('member_id') is None:
+            return Response("member not found", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            member_id = kwargs.get('member_id')
+            member_object = Member.objects.get(id=member_id)
+            member_object.delete()
+            return Response("member deleted", status=status.HTTP_200_OK)
 
 
 class ProjectView(APIView):
