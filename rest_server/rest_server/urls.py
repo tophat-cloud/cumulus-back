@@ -44,5 +44,5 @@ from drf_yasg import openapi
 
 urlpatterns = [
     path(r'admin/', admin.site.urls),
-    path(r'cumulus/', include('cumulus.urls')),
+    path(r'api/', include('cumulus.urls')),
 ]
