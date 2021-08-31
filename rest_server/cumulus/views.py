@@ -122,4 +122,67 @@ class ProjectView(APIView):
             project = Project.objects.get(id=project_id)
             project.delete()
             return Response("project deleted", status=status.HTTP_200_OK)
+
+
+class ThunderView(APIView):
+    """
+    POST /api/thunder
+    """
+    def post(self, request):
+        try:
+            project_id = request.data['project_id']
+        except AttributeError:
+            return Response("project not found", status=status.HTTP_404_NOT_FOUND)
+
+        if Thunder.objects.filter(project_id=project_id).exists():
+            try:
+                id = request.data['thunder_id']
+            except:
+                thunder_object = Thunder.objects.filter(project_id=project_id)
+                thunder_serializer = ThunderSerializer(thunder_object, many=True)
+                return Response(thunder_serializer.data, status=status.HTTP_200_OK)
+
+            if Thunder.objects.filter(project_id=project_id, id=id).exists():
+                thunder_object = Thunder.objects.get(project_id=project_id, id=id)
+                thunder_serializer = ThunderSerializer(thunder_object)
+                return Response(thunder_serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response("thunder not found", status=status.HTTP_404_NOT_FOUND)
+
+
+    """
+    DELETE /api/thunder/{thunder_id}
+    """
+    def delete(self, request):
+        try:
+            project_id = request.data['project_id']
+        except AttributeError:
+            return Response("project not found", status=status.HTTP_404_NOT_FOUND)
+
+        if Thunder.objects.filter(project_id=project_id).exists():
+            try:
+                thunder_id = request.data['thunder_id']
+            except AttributeError:
+                return Response("thunder not found", status=status.HTTP_404_NOT_FOUND)
+
+            if Thunder.objects.filter(project_id=project_id, thunder_id=thunder_id).exists():
+                thunder_object = Thunder.objects.get(project_id=project_id, thunder_id=thunder_id)
+                thunder_object.delete()
+                return Response("delete success", status=status.HTTP_200_OK)
+            else:
+                return Response("thunder not found", status=status.HTTP_404_NOT_FOUND)
+
+
+class CreateThunderView(APIView):
+    """
+    POST /api/thunder
+    """
+    def post(self, request):
+        thunder_serializer = ThunderSerializer(data=request.data)
+
+        if thunder_serializer.is_valid():
+            thunder_serializer.save()
+            return Response(thunder_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(thunder_serializer.error, status=status.HTTP_400_BAD_REQUEST)
  

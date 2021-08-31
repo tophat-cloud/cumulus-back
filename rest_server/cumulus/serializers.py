@@ -1,4 +1,4 @@
-from .models import Member, Project
+from .models import Member, Project, Thunder
 from rest_framework import serializers, viewsets
 from django.contrib.auth.hashers import make_password
 
@@ -22,3 +22,10 @@ class ProjectSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         self.fields['member'] =  MemberSerializer(read_only=True)
         return super(ProjectSerializer, self).to_representation(instance)
+
+
+class ThunderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Thunder
+        fields = '__all__'
