@@ -25,7 +25,7 @@ class Thunder(models.Model):
     priority = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(3)])
     url = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
 
 class ThunderSupport(models.Model):
@@ -37,5 +37,5 @@ class ThunderSupport(models.Model):
 class ThunderSource(models.Model):
     insecureCode = models.TextField()
     comment = models.TextField()
-    thunder_id = models.ForeignKey(Thunder, on_delete=models.CASCADE)
+    thunder = models.ForeignKey(Thunder, on_delete=models.CASCADE)
     thunder_support_statusCode = models.ForeignKey(ThunderSupport, on_delete=models.SET_NULL, null=True)
