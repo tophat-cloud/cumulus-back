@@ -6,6 +6,8 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
+from django.http import JsonResponse
+
 from .serializers import MemberSerializer, ProjectSerializer, ThunderSerializer
 from .models import Member, Project, Thunder
 
@@ -18,11 +20,16 @@ class MemberView(APIView):
     def post(self, request):
         member_serializer = MemberSerializer(data=request.data)
 
+        user_email = request.data.get('email')
+
         if member_serializer.is_valid():
+            if not Member.objects.filter(email=user_email).exists():
             member_serializer.save()
-            return Response(member_serializer.data, status=status.HTTP_201_CREATED)
+                return JsonResponse(member_serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({"message":"email already exists", "status": f"{status.HTTP_400_BAD_REQUEST}"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response("invalid request", status=status.HTTP_400_BAD_REQUEST)
  
     """
     GET /api/member
