@@ -24,9 +24,9 @@ class MemberView(APIView):
 
         if member_serializer.is_valid():
             if not Member.objects.filter(email=user_email).exists():
-            member_serializer.save()
+                member_serializer.save()
                 return JsonResponse(member_serializer.data, status=status.HTTP_201_CREATED)
-        else:
+            else:
                 return JsonResponse({"message":"email already exists", "status": f"{status.HTTP_400_BAD_REQUEST}"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response("invalid request", status=status.HTTP_400_BAD_REQUEST)
@@ -81,13 +81,11 @@ class ProjectView(APIView):
     """
     POST /api/project
     """
+    # @swagger_auto_schema(method='post', request_body=ProjectSerializer)
+    # @api_view(['POST'])
     def post(self, request):
-        new_project_data = {
-            'domain': request.data['domain'],
-            'title': request.data['title'],
-            'member': request.data['member']
-        }
-        project_serializer = ProjectSerializer(data=new_project_data)
+
+        project_serializer = ProjectSerializer(data=request.data)
 
         if project_serializer.is_valid():
             project_serializer.save()
@@ -101,7 +99,9 @@ class ProjectView(APIView):
     """
     def get(self, request, **kwargs):
         if kwargs.get('project_id') is None:
-            return Response("project not found", status=status.HTTP_404_NOT_FOUND)
+            project_object = Project.objects.all()
+            project_serializer = ProjectSerializer(project_object, many=True)
+            return Response(project_serializer.data, status=status.HTTP_200_OK)
         else:
             project_id = kwargs.get('project_id')
             project_serializer = ProjectSerializer(Project.objects.get(id=project_id))
@@ -157,7 +157,7 @@ class ThunderView(APIView):
                     limit = int(request.data['limit'])
                 except:
                     thunder_serializer = ThunderSerializer(filter_object.order_by('-created_at'), many=True)
-                return Response(thunder_serializer.data, status=status.HTTP_200_OK)
+                    return Response(thunder_serializer.data, status=status.HTTP_200_OK)
 
                 thunder_serializer = ThunderSerializer(filter_object.order_by('-created_at')[:limit], many=True)
                 return Response(thunder_serializer.data, status=status.HTTP_200_OK)
@@ -201,7 +201,9 @@ class CreateThunderView(APIView):
     POST /api/thunder
     """
     def post(self, request):
-        thunder_serializer = ThunderSerializer(data=request.data)
+        data = request.data.copy()
+        data['priority'] = int(data['priority'])
+        thunder_serializer = ThunderSerializer(data=data)
 
         if thunder_serializer.is_valid():
             thunder_serializer.save()
