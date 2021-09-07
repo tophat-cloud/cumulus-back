@@ -1,15 +1,20 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status
 
-from .serializers import MemberSerializer, ProjectSerializer
-from .models import Member, Project
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
+from .serializers import MemberSerializer, ProjectSerializer, ThunderSerializer
+from .models import Member, Project, Thunder
 
 
 class MemberView(APIView):
     """
     POST /api/member
     """
+    @swagger_auto_schema(request_body=MemberSerializer)
     def post(self, request):
         member_serializer = MemberSerializer(data=request.data)
 
@@ -36,6 +41,7 @@ class MemberView(APIView):
     """
     PUT /api/member/{member_id}
     """
+    @swagger_auto_schema(request_body=MemberSerializer)
     def put(self, request, **kwargs):
         if kwargs.get('member_id') is None:
             return Response("member not found", status=status.HTTP_400_BAD_REQUEST)
@@ -53,6 +59,7 @@ class MemberView(APIView):
     """
     DELETE /api/member/{member_id}
     """
+    @swagger_auto_schema(request_body=MemberSerializer)
     def delete(self, request, **kwargs):
         if kwargs.get('member_id') is None:
             return Response("member not found", status=status.HTTP_400_BAD_REQUEST)
