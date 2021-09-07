@@ -148,20 +148,29 @@ class ThunderView(APIView):
         except AttributeError:
             return Response("project not found", status=status.HTTP_404_NOT_FOUND)
 
-        if Thunder.objects.filter(project_id=project_id).exists():
+        filter_object = Thunder.objects.filter(project_id=project_id)
+        if filter_object.exists():
             try:
-                id = request.data['thunder_id']
+                thunder_id = request.data['thunder_id']
             except:
-                thunder_object = Thunder.objects.filter(project_id=project_id)
-                thunder_serializer = ThunderSerializer(thunder_object, many=True)
+                try:
+                    limit = int(request.data['limit'])
+                except:
+                    thunder_serializer = ThunderSerializer(filter_object.order_by('-created_at'), many=True)
                 return Response(thunder_serializer.data, status=status.HTTP_200_OK)
 
-            if Thunder.objects.filter(project_id=project_id, id=id).exists():
-                thunder_object = Thunder.objects.get(project_id=project_id, id=id)
+                thunder_serializer = ThunderSerializer(filter_object.order_by('-created_at')[:limit], many=True)
+                return Response(thunder_serializer.data, status=status.HTTP_200_OK)
+                
+
+            if Thunder.objects.filter(project_id=project_id, id=thunder_id).exists():
+                thunder_object = Thunder.objects.get(project_id=project_id, id=thunder_id)
                 thunder_serializer = ThunderSerializer(thunder_object)
                 return Response(thunder_serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response("thunder not found", status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response("project not found", status=status.HTTP_404_NOT_FOUND)
 
 
     """
