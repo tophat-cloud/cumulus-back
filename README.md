@@ -1,39 +1,31 @@
-# Tophat-Cloud-Back
-Django-based API Backend Server
+<p align="center">
+  <p align="center">
+    <a href="https://cumulus.tophat.cloud" target="_blank">
+      <img src="https://jinui.s3.ap-northeast-2.amazonaws.com/tophat/logo.png" alt="Cumulus" height="72">
+    </a>
+  </p>
+  <p align="center">
+    Application Weakness Monitoring Software
+  </p>
+</p>
 
-## Environment
-    Ubuntu 20.04
-    Python 3.8.10
-    PostgreSQL 13
+# Cumulus API Server
+A Django-based API server for Cumulus
 
-## Install
-    pip install -r requirements.txt
+Cumulus API server handles vulnerabilities received from SDK and Attack servers. And provide the information that the front end needs.
 
-## Create database 
-    python manage.py makemigrations
-    python manage.py migrate
-
-## Create super user
-    python manage.py createsuperuser
-
-## Run on development
-    python manage.py runserver
-
-## Secret
-You have to write the Django secret key and database information in an .env file. 
-
-Keep your secret from code and **DO NOT** push it on a public repository.
-
-**.env example**
-```
-SECRET_KEY =        # write your secret_key
-DATABASE_NAME =     # write your db_name
-DATABASE_USER =     # write your db_user
-DATABASE_PW =       # write your db_password
-```
+## Contents
+* [Contributing](https://github.com/tophat-cloud/tophat-cumulus-back/blob/master/CONTRIBUTING.md)
 
 ## Author
-ChangHoon Sung
+<p align="center">
+  <p align="center">
+    <a href="https://github.com/tophat-cloud" target="_blank">
+      <img src="https://jinui.s3.ap-northeast-2.amazonaws.com/tophat/tophat.png" alt="TopHat" height="100">
+    </a>
+  </p>
 
-## License
-MIT LICENSE
+  <p align="center">
+    <a href="http://github.com/changhoon-sung" target="_blank">@ChangHoon Sung</a>&nbsp from <strong>TopHat</strong>
+  </p>
+</p>
