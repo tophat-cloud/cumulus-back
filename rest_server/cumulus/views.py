@@ -11,6 +11,8 @@ from django.http import JsonResponse
 from .serializers import MemberSerializer, ProjectSerializer, ThunderSerializer
 from .models import Member, Project, Thunder
 
+from datetime import date, timedelta
+
 
 class MemberView(APIView):
     """
@@ -193,6 +195,28 @@ class ThunderView(APIView):
         else:
             return Response("project not found", status=status.HTTP_404_NOT_FOUND)
 
+    """
+    POST /api/thunder/counts/recent
+    """
+    def post(self, request, **kwargs):
+        DEFAULT_LIMIT = '7'
+
+        if not request.data.get('project_id'):
+            return Response("bad request", status=status.HTTP_400_BAD_REQUEST)
+
+        project_id = request.data.get('project_id')
+        limit = int(request.data.get('limit') or DEFAULT_LIMIT)
+        
+        today = date.today()
+        daterange = [today - timedelta(x) for x in range(limit)]
+        
+        result = dict()
+        for t in daterange:
+            date_string = t.strftime("%Y-%m-%d")
+            cnt = Thunder.objects.filter(project_id=project_id, created_at__date=t).count()
+            result[date_string] = cnt
+        
+        return Response(result, status=status.HTTP_200_OK)
 
     """
     DELETE /api/thunder/{thunder_id}
