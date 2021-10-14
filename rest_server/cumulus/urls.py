@@ -24,6 +24,7 @@ urlpatterns = [
     path('member/<int:member_id>', views.MemberView.as_view(), name='member_detail'),
     path('project', views.ProjectView.as_view(), name='project'),
     path('project/<str:project_id>', views.ProjectView.as_view(), name='project_detail'),
+    path('project/enroll', views.ProjectView.as_view(), name='domain_enroll'),
     path('thunder', views.ThunderView.as_view(), name='thunder'),
     path('thunder/create', views.CreateThunderView.as_view(), name='thunder_create')
 ]

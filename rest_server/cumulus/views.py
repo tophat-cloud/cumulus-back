@@ -108,6 +108,28 @@ class ProjectView(APIView):
             return Response(project_serializer.data, status=status.HTTP_200_OK)
  
     """
+    PUT /api/project/enroll
+    """
+    def patch(self, request, **kwargs):
+        if request.data.get('project_id') is None or request.data.get('domain') is None:
+            return Response("bad request", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            data = {'domain': request.data.get('domain')}
+            project_id = request.data.get('project_id')
+            filter_object = Project.objects.filter(id=project_id)
+            if filter_object.exists():
+                project_object = Project.objects.get(id=project_id)
+
+                updated_project_serializer = ProjectSerializer(project_object, data=data, partial=True)
+                if updated_project_serializer.is_valid():
+                    updated_project_serializer.save()
+                    return Response("success", status=status.HTTP_200_OK)
+                else:
+                    return Response(updated_project_serializer.error, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response("invalid project_id", status=status.HTTP_400_BAD_REQUEST)
+
+    """
     PUT /api/project/{project_id}
     """
     def put(self, request, **kwargs):
@@ -123,7 +145,6 @@ class ProjectView(APIView):
                 return Response(updated_member_serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(updated_member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
-
 
     """
     DELETE /api/project/{project_id}

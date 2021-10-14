@@ -14,7 +14,7 @@ class Member(models.Model):
 
 class Project(models.Model):
     id = models.CharField(max_length=21, default=generate, primary_key=True, editable=False)
-    domain = models.CharField(max_length=255)
+    domain = models.CharField(max_length=255, null=True)
     title = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
