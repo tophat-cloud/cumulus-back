@@ -26,6 +26,7 @@ class Thunder(models.Model):
     url = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    details = models.TextField(null=True)
 
 
 class ThunderSupport(models.Model):
