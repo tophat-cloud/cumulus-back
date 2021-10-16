@@ -157,8 +157,8 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # AUTH
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',  # <- 디폴트 모델 백엔드
-    'allauth.account.auth_backends.AuthenticationBackend', # <- 추가
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -171,9 +171,3 @@ SITE_ID = 1
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
-
-LOGIN_URL = '/account/register'
-
-LOGIN_REDIRECT_URL = '/'
-
-LOGOUT_REDIRECT_URL = '/'

@@ -2,17 +2,16 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-
-from .serializers import MemberSerializer, ProjectSerializer, ThunderSerializer
-from .models import Member, Project, Thunder
+from .serializers import ProjectSerializer, ThunderSerializer
+from .models import Project, Thunder
 
 from datetime import date, timedelta
 
 
 class ProjectView(APIView):
+    permission_classes = [IsAuthenticated]
     """
     POST /api/project
     """
@@ -20,7 +19,11 @@ class ProjectView(APIView):
     # @api_view(['POST'])
     def post(self, request):
         title = request.data.get('title')
-        project_serializer = ProjectSerializer(data=request.data)
+        
+        data = request.data.copy()
+        data['member'] = request.user.id
+
+        project_serializer = ProjectSerializer(data=data)
 
         if project_serializer.is_valid():
             if Project.objects.filter(title=title).exists():
@@ -37,12 +40,12 @@ class ProjectView(APIView):
     """
     def get(self, request, **kwargs):
         if kwargs.get('project_id') is None:
-            project_object = Project.objects.all()
+            project_object = Project.objects.filter(member_id=request.user.id)
             project_serializer = ProjectSerializer(project_object, many=True)
             return Response(project_serializer.data, status=status.HTTP_200_OK)
         else:
             project_id = kwargs.get('project_id')
-            project_serializer = ProjectSerializer(Project.objects.get(id=project_id))
+            project_serializer = ProjectSerializer(Project.objects.get(id=project_id, member_id=request.user.id))
             return Response(project_serializer.data, status=status.HTTP_200_OK)
  
     """
@@ -92,12 +95,13 @@ class ProjectView(APIView):
             return Response("invalid request", status=status.HTTP_400_BAD_REQUEST)
         else:
             project_id = kwargs.get('project_id')
-            project = Project.objects.get(id=project_id)
+            project = Project.objects.get(id=project_id, member_id=request.user.id)
             project.delete()
             return Response("project deleted", status=status.HTTP_200_OK)
 
 
 class ThunderView(APIView):
+    permission_classes = [IsAuthenticated]
     """
     POST /api/thunder
     """
@@ -155,6 +159,7 @@ class ThunderView(APIView):
 
 
 class CreateThunderView(APIView):
+    permission_classes = [IsAuthenticated]
     """
     POST /api/thunder
     """
@@ -171,6 +176,7 @@ class CreateThunderView(APIView):
 
 
 class CountThunderView(APIView):
+    permission_classes = [IsAuthenticated]
     """
     POST /api/thunder/counts/recent
     """
@@ -196,6 +202,7 @@ class CountThunderView(APIView):
 
 
 class ScannerHelperView(APIView):
+    permission_classes = [IsAuthenticated]
     """
     POST /api/project/domains
     """
