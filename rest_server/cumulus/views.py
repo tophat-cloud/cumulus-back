@@ -192,3 +192,12 @@ class CountThunderView(APIView):
             result[date_string] = cnt
         
         return Response(result, status=status.HTTP_200_OK)
+
+
+class ScannerHelperView(APIView):
+    """
+    POST /api/project/domains
+    """
+    def post(self, request):
+        result = Project.objects.all().values("id", "domain")
+        return Response(result, status=status.HTTP_200_OK)

@@ -21,6 +21,7 @@ from . import views
 app_name = 'cumulus'
 urlpatterns = [
     path('project', views.ProjectView.as_view(), name='project'),
+    path('project/domains', views.ScannerHelperView.as_view(), name='domains'),
     path('project/<str:project_id>', views.ProjectView.as_view(), name='project_detail'),
     path('project/enroll', views.ProjectView.as_view(), name='domain_enroll'),
     path('thunder', views.ThunderView.as_view(), name='thunder'),
