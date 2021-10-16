@@ -128,7 +128,7 @@ class ThunderView(APIView):
             else:
                 return Response("thunder not found", status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response("project not found", status=status.HTTP_404_NOT_FOUND)
+            return Response("thunder not found", status=status.HTTP_404_NOT_FOUND)
 
     """
     DELETE /api/thunder/{thunder_id}
