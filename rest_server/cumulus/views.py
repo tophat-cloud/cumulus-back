@@ -209,3 +209,8 @@ class ScannerHelperView(APIView):
     def post(self, request):
         result = Project.objects.all().values("id", "domain")
         return Response(result, status=status.HTTP_200_OK)
+
+
+class HealthCheckView(APIView):
+    def get(self, request):
+        return Response(status=status.HTTP_200_OK)

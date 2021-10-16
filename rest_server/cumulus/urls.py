@@ -27,4 +27,5 @@ urlpatterns = [
     path('thunder', views.ThunderView.as_view(), name='thunder'),
     path('thunder/create', views.CreateThunderView.as_view(), name='thunder_create'),
     path('thunder/counts/recent', views.CountThunderView.as_view(), name='thunder_count_recent'),
+    path('healthcheck', views.HealthCheckView.as_view())
 ]
