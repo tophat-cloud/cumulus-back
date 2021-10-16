@@ -33,6 +33,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path(r'admin/', admin.site.urls),
+    path('rest-auth/', include('rest_auth.urls')),
     path(r'', include('cumulus.urls')),
     path(r'accounts/', include('accounts.urls')),
 ]

@@ -43,9 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'corsheaders',
     'sslserver',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     'drf_yasg',
     'cumulus',
     'accounts'
@@ -141,6 +144,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
 
 # USER
 AUTH_USER_MODEL = 'accounts.CustomUser'

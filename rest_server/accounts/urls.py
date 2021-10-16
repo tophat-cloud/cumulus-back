@@ -20,5 +20,4 @@ from . import views
 app_name = 'accounts'
 urlpatterns = [
     path('signup', views.UserRegistrationView.as_view(), name='signup'),
-    path(r'/', include('allauth.urls')),
 ]
