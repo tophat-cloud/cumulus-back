@@ -6,10 +6,8 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-from django.http import JsonResponse
-
-from .serializers import ProjectSerializer, ThunderSerializer
-from .models import Project, Thunder
+from .serializers import MemberSerializer, ProjectSerializer, ThunderSerializer
+from .models import Member, Project, Thunder
 
 from datetime import date, timedelta
 
@@ -21,12 +19,15 @@ class ProjectView(APIView):
     # @swagger_auto_schema(method='post', request_body=ProjectSerializer)
     # @api_view(['POST'])
     def post(self, request):
-
+        title = request.data.get('title')
         project_serializer = ProjectSerializer(data=request.data)
 
         if project_serializer.is_valid():
-            project_serializer.save()
-            return Response(project_serializer.data, status=status.HTTP_201_CREATED)
+            if Project.objects.filter(title=title).exists():
+                return Response("project already exists", status=status.HTTP_400_BAD_REQUEST)
+            else:
+                project_serializer.save()
+                return Response(project_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(project_serializer.error, status=status.HTTP_400_BAD_REQUEST)
  
