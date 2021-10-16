@@ -8,75 +8,10 @@ from drf_yasg import openapi
 
 from django.http import JsonResponse
 
-from .serializers import MemberSerializer, ProjectSerializer, ThunderSerializer
-from .models import Member, Project, Thunder
+from .serializers import ProjectSerializer, ThunderSerializer
+from .models import Project, Thunder
 
 from datetime import date, timedelta
-
-
-class MemberView(APIView):
-    """
-    POST /api/member
-    """
-    @swagger_auto_schema(request_body=MemberSerializer)
-    def post(self, request):
-        member_serializer = MemberSerializer(data=request.data)
-
-        user_email = request.data.get('email')
-
-        if member_serializer.is_valid():
-            if not Member.objects.filter(email=user_email).exists():
-                member_serializer.save()
-                return JsonResponse(member_serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                return JsonResponse({"message":"email already exists", "status": f"{status.HTTP_400_BAD_REQUEST}"}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response("invalid request", status=status.HTTP_400_BAD_REQUEST)
- 
-    """
-    GET /api/member
-    GET /api/member/{member_id}
-    """
-    def get(self, request, **kwargs):
-        if kwargs.get('member_id') is None:
-            member_queryset = Member.objects.all()
-            member_queryset_serializer = MemberSerializer(member_queryset, many=True)
-            return Response(member_queryset_serializer.data, status=status.HTTP_200_OK)
-        else:
-            member_id = kwargs.get('member_id')
-            member_serializer = MemberSerializer(Member.objects.get(id=member_id))
-            return Response(member_serializer.data, status=status.HTTP_200_OK)
- 
-    """
-    PUT /api/member/{member_id}
-    """
-    @swagger_auto_schema(request_body=MemberSerializer)
-    def put(self, request, **kwargs):
-        if kwargs.get('member_id') is None:
-            return Response("member not found", status=status.HTTP_400_BAD_REQUEST)
-        else:
-            member_id = kwargs.get('member_id')
-            member_object = Member.objects.get(id=member_id)
-
-            updated_member_serializer = MemberSerializer(member_object, data=request.data)
-            if updated_member_serializer.is_valid():
-                updated_member_serializer.save()
-                return Response(updated_member_serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(updated_member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
-            
-    """
-    DELETE /api/member/{member_id}
-    """
-    @swagger_auto_schema(request_body=MemberSerializer)
-    def delete(self, request, **kwargs):
-        if kwargs.get('member_id') is None:
-            return Response("member not found", status=status.HTTP_400_BAD_REQUEST)
-        else:
-            member_id = kwargs.get('member_id')
-            member_object = Member.objects.get(id=member_id)
-            member_object.delete()
-            return Response("member deleted", status=status.HTTP_200_OK)
 
 
 class ProjectView(APIView):
@@ -131,22 +66,22 @@ class ProjectView(APIView):
             else:
                 return Response("invalid project_id", status=status.HTTP_400_BAD_REQUEST)
 
-    """
-    PUT /api/project/{project_id}
-    """
-    def put(self, request, **kwargs):
-        if kwargs.get('project_id') is None:
-            return Response("project not found", status=status.HTTP_404_NOT_FOUND)
-        else:
-            project_id = kwargs.get('project_id')
-            member_object = Member.objects.get(id=project_id)
+    # """
+    # PUT /api/project/{project_id}
+    # """
+    # def put(self, request, **kwargs):
+    #     if kwargs.get('project_id') is None:
+    #         return Response("project not found", status=status.HTTP_404_NOT_FOUND)
+    #     else:
+    #         project_id = kwargs.get('project_id')
+    #         member_object = Member.objects.get(id=project_id)
 
-            updated_member_serializer = ProjectSerializer(member_object, data=request.data)
-            if updated_member_serializer.is_valid():
-                updated_member_serializer.save()
-                return Response(updated_member_serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(updated_member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
+    #         updated_member_serializer = ProjectSerializer(member_object, data=request.data)
+    #         if updated_member_serializer.is_valid():
+    #             updated_member_serializer.save()
+    #             return Response(updated_member_serializer.data, status=status.HTTP_200_OK)
+    #         else:
+    #             return Response(updated_member_serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
     """
     DELETE /api/project/{project_id}

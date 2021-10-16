@@ -34,7 +34,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path(r'admin/', admin.site.urls),
     path(r'', include('cumulus.urls')),
-    path(r'account/', include('account.urls')),
+    path(r'accounts/', include('accounts.urls')),
 ]
 
 if settings.DEBUG:

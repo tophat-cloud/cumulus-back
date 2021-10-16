@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
@@ -6,18 +7,12 @@ from functools import partial
 from nanoid import generate
 
 
-class Member(models.Model):
-    email = models.EmailField(max_length=255)
-    password = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
 class Project(models.Model):
     id = models.CharField(max_length=21, default=generate, primary_key=True, editable=False)
     domain = models.CharField(max_length=255, null=True)
     title = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 class Thunder(models.Model):
