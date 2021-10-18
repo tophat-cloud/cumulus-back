@@ -171,3 +171,7 @@ SITE_ID = 1
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = [
+    'https://localhost:3000'
+]
