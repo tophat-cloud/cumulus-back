@@ -33,7 +33,7 @@ class ProjectView(APIView):
                 return Response(project_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(project_serializer.error, status=status.HTTP_400_BAD_REQUEST)
- 
+
     """
     GET /api/project
     GET /api/project/{project_id}
@@ -47,29 +47,6 @@ class ProjectView(APIView):
             project_id = kwargs.get('project_id')
             project_serializer = ProjectSerializer(Project.objects.get(id=project_id, member_id=request.user.id))
             return Response(project_serializer.data, status=status.HTTP_200_OK)
- 
-    """
-    PUT /api/project/enroll
-    """
-    @permission_classes([AllowAny])
-    def patch(self, request, **kwargs):
-        if request.data.get('project_id') is None or request.data.get('domain') is None:
-            return Response("bad request", status=status.HTTP_400_BAD_REQUEST)
-        else:
-            data = {'domain': request.data.get('domain')}
-            project_id = request.data.get('project_id')
-            filter_object = Project.objects.filter(id=project_id)
-            if filter_object.exists():
-                project_object = Project.objects.get(id=project_id)
-
-                updated_project_serializer = ProjectSerializer(project_object, data=data, partial=True)
-                if updated_project_serializer.is_valid():
-                    updated_project_serializer.save()
-                    return Response("success", status=status.HTTP_200_OK)
-                else:
-                    return Response(updated_project_serializer.error, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response("invalid project_id", status=status.HTTP_400_BAD_REQUEST)
 
     # """
     # PUT /api/project/{project_id}
@@ -210,6 +187,31 @@ class ScannerHelperView(APIView):
     def post(self, request):
         result = Project.objects.all().values("id", "domain")
         return Response(result, status=status.HTTP_200_OK)
+
+
+class SDKHelperView(APIView):
+    permission_classes = [AllowAny,]
+    """
+    PUT /api/project/enroll
+    """
+    def patch(self, request, **kwargs):
+        if request.data.get('project_id') is None or request.data.get('domain') is None:
+            return Response("bad request", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            data = {'domain': request.data.get('domain')}
+            project_id = request.data.get('project_id')
+            filter_object = Project.objects.filter(id=project_id)
+            if filter_object.exists():
+                project_object = Project.objects.get(id=project_id)
+
+                updated_project_serializer = ProjectSerializer(project_object, data=data, partial=True)
+                if updated_project_serializer.is_valid():
+                    updated_project_serializer.save()
+                    return Response("success", status=status.HTTP_200_OK)
+                else:
+                    return Response(updated_project_serializer.error, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response("invalid project_id", status=status.HTTP_400_BAD_REQUEST)
 
 
 class HealthCheckView(APIView):
