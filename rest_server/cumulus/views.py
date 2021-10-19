@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from .serializers import ProjectSerializer, ThunderSerializer
 from .models import Project, Thunder
@@ -51,6 +51,7 @@ class ProjectView(APIView):
     """
     PUT /api/project/enroll
     """
+    @permission_classes([AllowAny])
     def patch(self, request, **kwargs):
         if request.data.get('project_id') is None or request.data.get('domain') is None:
             return Response("bad request", status=status.HTTP_400_BAD_REQUEST)
