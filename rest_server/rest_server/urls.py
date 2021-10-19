@@ -28,7 +28,7 @@ schema_view = get_schema_view(
         terms_of_service="https://www.google.com/policies/terms/",
     ),
     public=True,
-    permission_classes=(permissions.IsAuthenticated,),
+    # permission_classes=(permissions.IsAuthenticated,),
 )
 
 urlpatterns = [
