@@ -120,10 +120,10 @@ class ThunderView(APIView):
                 try:
                     limit = int(request.data['limit'])
                 except:
-                    thunder_serializer = ThunderSerializer(filter_object.order_by('-created_at'), many=True)
+                    thunder_serializer = ThunderSerializer(filter_object.order_by('created_at'), many=True)
                     return Response(thunder_serializer.data, status=status.HTTP_200_OK)
 
-                thunder_serializer = ThunderSerializer(filter_object.order_by('-created_at')[:limit], many=True)
+                thunder_serializer = ThunderSerializer(filter_object.order_by('created_at')[:limit], many=True)
                 return Response(thunder_serializer.data, status=status.HTTP_200_OK)
                 
 
@@ -203,7 +203,7 @@ class CountThunderView(APIView):
 
 
 class ScannerHelperView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny,]
     """
     POST /api/project/domains
     """
