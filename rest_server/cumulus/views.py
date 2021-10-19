@@ -137,7 +137,7 @@ class ThunderView(APIView):
 
 
 class CreateThunderView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny,]
     """
     POST /api/thunder
     """
