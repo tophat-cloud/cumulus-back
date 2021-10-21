@@ -4,9 +4,6 @@
       <img src="https://jinui.s3.ap-northeast-2.amazonaws.com/tophat/logo.png" alt="Cumulus" height="72">
     </a>
   </p>
-  <p align="center">
-    Application Weakness Monitoring Software
-  </p>
 </p>
 
 # Contributing
@@ -44,16 +41,3 @@ DATABASE_NAME =     # write your db_name
 DATABASE_USER =     # write your db_user
 DATABASE_PW =       # write your db_password
 ```
-
-## Author
-<p align="center">
-  <p align="center">
-    <a href="https://github.com/tophat-cloud" target="_blank">
-      <img src="https://jinui.s3.ap-northeast-2.amazonaws.com/tophat/tophat.png" alt="TopHat" height="100">
-    </a>
-  </p>
-
-  <p align="center">
-    <a href="http://github.com/changhoon-sung" target="_blank">@ChangHoon Sung</a>&nbsp from <strong>TopHat</strong>
-  </p>
-</p>
