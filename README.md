@@ -12,7 +12,7 @@
 # Cumulus API Server
 A Django-based API server for Cumulus
 
-Cumulus API server handles weaknesses received from SDK and Attack servers and provide the information that the frontend needs.
+Cumulus API server handles weaknesses received from SDK and scanner and provide the information that the frontend needs.
 
 ## Contents
 * [Contributing](https://github.com/tophat-cloud/tophat-cumulus-back/blob/master/CONTRIBUTING.md)
