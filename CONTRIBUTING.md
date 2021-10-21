@@ -9,6 +9,10 @@
 # Contributing
 Welcome and Thanks your suggestion! we ready for accept grateful idea. Just throw your idea in the form of pull requests on GitHub. Let's contribute and be a cumulus family!
 
+## Versioning & Branch
+- We adopt [calvar](https://calver.org) as versioning.
+- We adopt Git Flow branch strategy.
+
 ## Environment
     Ubuntu 20.04
     Python 3.8.10
